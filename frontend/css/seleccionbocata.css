@@ -1,0 +1,120 @@
+body{
+    background-image: url("../img/paredblanca.png");
+    background-size: cover;       /* Escala la imagen para cubrir toda la pantalla */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+#primariotexto{
+    text-align: center;
+    margin-top: 10px;
+    
+}
+.color{
+    color: #9E1407;
+}
+h1{
+    font-family: 'Irish Grover';
+    font-size: 40px;
+}
+
+#primariotexto {
+    background-color: #ffffff;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.texto-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.texto-container h2 {
+    font-size: 30px;
+    color: #666666;
+    font-family: 'Irish Grover';
+}
+
+
+#botones-bocadillo {
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+#bocadillo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+}
+
+.boton {
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    height: 200px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.frio {
+    background-color: #43a047;
+}
+
+.caliente {
+    background-color: #e53935; 
+}
+
+.frio:hover {
+    background-color: #2e7d32; 
+}
+
+.caliente:hover {
+    background-color: #b71c1c; 
+}
+
+.boton h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    margin-top: 0px;
+    font-weight: bold;
+}
+
+.boton p {
+    font-size: 14px;
+    margin: 0;
+}
+#textobocata{
+    text-align: center;
+    font-size: 28px;
+    font-family: 'Irish Grover';
+}
+
+p{
+    font-size: 30px;
+    font-weight: bold;
+}
+.confirmar-seleccion{
+    background-color: white;            
+    color: #FF7043;                     
+    border: 2px solid #FF7043;          
+    padding: 10px 20px;                 
+    font-size: 16px;                    
+    font-weight: bold;                   
+    cursor: pointer;                     
+    border-radius: 5px;                  
+    transition: background-color 0.3s, color 0.3s;  
+}
+.confirmar-seleccion:hover,
+      .confirmar-seleccion:active {
+        background-color: #FF7043;           
+        color: white;
+}  
