@@ -30,6 +30,13 @@ class Usuario{
        $statement->execute();
  
        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+       if(count($data) > 0){
+         session_start();
+         $_SESSION["correo"] = $data[0]["correo"];
+       }
+
        return count($data) > 0;
     }
 }

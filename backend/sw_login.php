@@ -1,12 +1,11 @@
 <?php
 header('Content-Type: application/json');
 
-require_once 'inc/auth.inc.php';
 require 'models/Usuario.php';
 
 $usuario = new Usuario();
 
-$success = 'true';
+$success = true;
 $msg = "Usuario valido";
 $data = [];
 
