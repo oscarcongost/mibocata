@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <title>Selecciona Tu Bocadillo</title>
     <script src="controllers/seleccionbocata.js"></script>
 </head>
+
 <body>
     <div id="primariotexto">
         <div class="texto-container">
@@ -22,23 +24,24 @@
     </div>
     <div id="botones-bocadillo">
         <h2 id="textobocata">SELECCIONA TU BOCADILLO</h2>
+        <p id="dia-usuario"></p>
         <div id="bocadillo-container">
-            <div class ="contenedor-boton">
+            <div class="contenedor-boton">
+                <!-- Bocadillo Frío -->
                 <button class="boton frio">
                     <h3>BOCADILLO FRÍO</h3>
-                    <p>Bocadillo de atún con tomate</p>
+                    <p id="bocadillo-frio"></p> <!-- Este campo se actualizará -->
                 </button>
             </div>
-            <div>
+            <div class="contenedor-boton">
+                <!-- Bocadillo Caliente -->
                 <button class="boton caliente">
                     <h3>BOCADILLO CALIENTE</h3>
-                    <p>Bocadillo de salchicha blanca y mayonesa</p>
+                    <p id="bocadillo-caliente"></p> <!-- Este campo se actualizará -->
                 </button>
             </div>
-
-
         </div>
-    </div>    
+    </div>
     <div id="primariotexto">
         <div class="texto-container">
             <h2>DINERO TOTAL:</h2>
@@ -47,6 +50,6 @@
             </button>
         </div>
     </div>
-
 </body>
+
 </html>
