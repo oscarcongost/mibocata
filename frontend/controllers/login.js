@@ -10,7 +10,6 @@ function llamdaFetch(){
         loginMessage.style.color = "red";
         return; // Detener la ejecución si faltan datos
     }
-    
 
     const json = {
         action: "find",

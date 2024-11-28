@@ -31,10 +31,9 @@ class Usuario{
  
        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
        if(count($data) > 0){
          session_start();
-         $_SESSION["correo"] = $data[0]["correo"];
+         $_SESSION["mac"] = $data[0]["mac"];
        }
 
        return count($data) > 0;

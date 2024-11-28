@@ -1,46 +1,30 @@
-// seleccionbocata.js
-
-// Realizar una solicitud a seleccionbocata.php para verificar autenticación
-/*fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php')
+fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php')
     .then(response => response.json())
     .then(data => {
         console.log("Json bocata: ", data);
-        if (data.success) {
-            // Si el usuario no está autenticado, redirigir a index.html
-        } else {
+        if (!data.success) {
             window.location.href = 'index.html';
-            // Aquí puedes añadir la lógica que necesites cuando el usuario esté autenticado
         }
     })
     .catch(error => console.error('Error al verificar autenticación:', error));
 
-// seleccionbocata.js
-*/
-// Esperar a que el DOM esté cargado antes de agregar el event listener
 document.addEventListener("DOMContentLoaded", function () {
-    // Seleccionar el botón de cerrar sesión por su ID
     const cerrarSesionBtn = document.getElementById('cerrar-sesion-btn');
-
-    // Agregar el event listener para el clic en el botón de cerrar sesión
     cerrarSesionBtn.addEventListener('click', cerrarSesion);
 });
 
-// Función que realiza la solicitud para cerrar la sesión en el servidor
 function cerrarSesion() {
     fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php', {
         method: 'POST',
-        body: JSON.stringify({
-            action: "cerrar_sesion"
-        }),
+        body: JSON.stringify({ action: "cerrar_sesion" }),
         headers: {
             'Content-Type': 'application/json',
-            'Logout-Request': 'true' // Encabezado personalizado para identificar la solicitud de cierre de sesión
+            'Logout-Request': 'true'
         }
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Redirigir al usuario a la página de inicio de sesión
                 window.location.href = 'index.html';
             } else {
                 alert('Error al cerrar sesión');
@@ -49,51 +33,102 @@ function cerrarSesion() {
         .catch(error => console.error('Error:', error));
 }
 
-// Esperar a que el DOM esté cargado antes de agregar el event listener
 document.addEventListener("DOMContentLoaded", function () {
-    // Obtener el día actual
+    let bocadilloSeleccionado = null;
+    const dineroTotal = document.getElementById('dinero-total');
+    const botonFrio = document.getElementById('boton-frio');
+    const botonCaliente = document.getElementById('boton-caliente');
+    const confirmarSeleccionBtn = document.getElementById('confirmar-seleccion-btn');
     const fechaActual = new Date();
     const diasDeLaSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const diaActual = diasDeLaSemana[fechaActual.getDay()];
 
-    // Hacer la solicitud fetch para obtener los bocadillos del día
     fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            dia: diaActual,  // Enviar el día actual al backend
-            action: "listar"
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dia: diaActual, action: "listar" })
     })
         .then(response => response.json())
         .then(data => {
             if (data.success && data.bocadillos) {
-                // Asumiendo que recibimos una lista de bocadillos del backend
                 const bocadillos = data.bocadillos;
-
-                // Actualizar los campos de los bocadillos
                 const bocadilloFrio = document.querySelector('#bocadillo-frio');
                 const bocadilloCaliente = document.querySelector('#bocadillo-caliente');
-                const objectobocadillofrio = data.bocadillos[0];
-                const objectobocadillocaliente = data.bocadillos[1];
+                const descripcionFrio = document.querySelector('#descripcion-frio');
+                const descripcionCaliente = document.querySelector('#descripcion-caliente');
+                const precioFrio = document.querySelector('#precio-frio');
+                const precioCaliente = document.querySelector('#precio-caliente');
 
-                console.log(data.bocadillos)
-
-                // Comprobar si se recibieron bocadillos
                 if (bocadillos.length > 0) {
-                    // Asignamos el nombre y la descripción del bocadillo frío
-
-                    bocadilloFrio.textContent = `${objectobocadillofrio.nombre}`;
-
-                    // Asignamos el nombre y la descripción del bocadillo caliente
-
-                    bocadilloCaliente.textContent = `${objectobocadillocaliente.nombre}`;
+                    bocadilloFrio.textContent = bocadillos[0].nombre;
+                    descripcionFrio.textContent = bocadillos[0].descripcion;
+                    precioFrio.textContent = `Precio: €${Number.parseFloat(bocadillos[0].pvp).toFixed(2)}`;
+                    bocadilloCaliente.textContent = bocadillos[1].nombre;
+                    descripcionCaliente.textContent = bocadillos[1].descripcion;
+                    precioCaliente.textContent = `Precio: €${Number.parseFloat(bocadillos[1].pvp).toFixed(2)}`;
                 }
             } else {
                 console.error('No se encontraron bocadillos para el día actual');
             }
         })
         .catch(error => console.error('Error al obtener los bocadillos:', error));
+
+    botonFrio.addEventListener('click', function () {
+        const bocadilloNombre = document.querySelector('#bocadillo-frio').textContent;
+        const precio = parseFloat(document.querySelector('#precio-frio').textContent.replace('Precio: €', ''));
+        bocadilloSeleccionado = { nombre: bocadilloNombre, precio: precio };
+        dineroTotal.textContent = `${precio}€`;
+    });
+
+    botonCaliente.addEventListener('click', function () {
+        const bocadilloNombre = document.querySelector('#bocadillo-caliente').textContent;
+        const precio = parseFloat(document.querySelector('#precio-caliente').textContent.replace('Precio: €', ''));
+        bocadilloSeleccionado = { nombre: bocadilloNombre, precio: precio };
+        dineroTotal.textContent = `${precio}€`;
+    });
+
+    confirmarSeleccionBtn.addEventListener('click', function () {
+        if (bocadilloSeleccionado) {
+            const pedido = {
+                bocadillo_nombre: bocadilloSeleccionado.nombre,
+                retirado: false
+            };
+            fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'añadirpedido', pedido: pedido })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pedido realizado con éxito');
+                        bocadilloSeleccionado = null;
+                        dineroTotal.textContent = '0€';
+                    } else {
+                        alert('Error al realizar el pedido');
+                    }
+                })
+                .catch(error => console.error('Error al realizar el pedido:', error));
+        } else {
+            alert('Primero selecciona un bocadillo antes de confirmar.');
+        }
+    });
+
+    const cerrarSesionBtn = document.getElementById('cerrar-sesion-btn');
+    cerrarSesionBtn.addEventListener('click', function () {
+        fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: "cerrar_sesion" })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Error al cerrar sesión');
+                }
+            })
+            .catch(error => console.error('Error al cerrar sesión:', error));
+    });
 });
