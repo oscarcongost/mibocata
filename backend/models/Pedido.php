@@ -19,10 +19,9 @@ class Pedido {
 
     public function marcarRetirado($id) {
         try {
-            $sql = "UPDATE pedidos SET retirado = 1 WHERE id = :id";
+            $sql = "UPDATE pedidos SET retirado = 1 WHERE id = ?";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
+            $stmt->execute([$id]);
             return ['success' => true, 'message' => 'Pedido marcado como retirado.'];
         } catch (PDOException $e) {
             return ['success' => false, 'message' => 'Error al marcar el pedido como retirado: ' . $e->getMessage()];

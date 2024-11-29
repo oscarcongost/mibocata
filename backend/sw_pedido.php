@@ -1,7 +1,6 @@
 <?php
 require 'inc/Singleton.php';
 
-
 $pdo = Singleton::getInstance()->getPDO();
 
 $input = json_decode(file_get_contents("php://input"), true);
