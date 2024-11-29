@@ -18,13 +18,10 @@ class Cocina
         $this->rol = $rol;
     }
 
-    // Comprueba si existe el usuario en la DB
-    // Cocina.php
     public function validarCredenciales($correo, $pass, $rol)
     {
         $pdo = Singleton::getInstance()->getPDO();
 
-        // Concatenación directa en la consulta
         $sql = "SELECT * FROM usuario WHERE email = '$correo' AND rol = '$rol' AND contraseña = '$pass'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

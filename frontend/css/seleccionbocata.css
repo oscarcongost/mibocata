@@ -1,7 +1,7 @@
 body{
     background-image: url("../img/paredblanca.png");
-    background-size: cover;       /* Escala la imagen para cubrir toda la pantalla */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-size: cover;
+    background-repeat: no-repeat; 
 }
 #primariotexto{
     text-align: center;

@@ -22,12 +22,10 @@ class Usuario
       $this->rol = $rol;
    }
 
-   // Usuario.php
    public function validarCredenciales($correo, $contrasena)
    {
       $pdo = Singleton::getInstance()->getPDO();
 
-      // Concatenación directa en la consulta
       $statement = $pdo->prepare("SELECT * FROM alumno WHERE correo = '$correo' AND pass = '$contrasena'");
       $statement->execute();
 

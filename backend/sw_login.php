@@ -11,17 +11,14 @@ $success = true;
 $msg = "Usuario válido";
 $data = [];
 
-// Recibir el JSON del frontend
 $input = json_decode(file_get_contents("php://input"), true);
 
-// Validar que todos los datos estén presentes
 if (isset($input["filter"])) {
     $filter = $input["filter"];
     $correo = $filter[0]["correo"] ?? null;
     $pass = $filter[1]["pass"] ?? null;
     $rol = $filter[2]["rol"] ?? null;
 
-    // Validar que los datos sean correctos
     if ($correo && $pass && $rol) {
         if ($rol === "cocina") {
             if ($cocina->validarCredenciales($correo, $pass, $rol)) {

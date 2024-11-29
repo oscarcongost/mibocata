@@ -2,12 +2,10 @@
 class Pedido {
     private $pdo;
 
-    // Constructor, recibe una instancia de PDO
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
 
-    // Método para obtener todos los pedidos
     public function obtenerTodos() {
         try {
             $sql = "SELECT id, alumno_mac, bocadillo_nombre, fecha, hora, retirado FROM pedidos ORDER BY fecha DESC, hora ASC";
@@ -19,7 +17,6 @@ class Pedido {
         }
     }
 
-    // Método para marcar un pedido como retirado
     public function marcarRetirado($id) {
         try {
             $sql = "UPDATE pedidos SET retirado = 1 WHERE id = :id";
