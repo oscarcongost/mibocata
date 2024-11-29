@@ -1,7 +1,6 @@
 fetch('http://localhost/mibocata/backend/sw_seleccionbocata.php')
     .then(response => response.json())
     .then(data => {
-        console.log("Json bocata: ", data);
         if (!data.success) {
             window.location.href = 'index.html';
         }
@@ -62,10 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (bocadillos.length > 0) {
                     bocadilloFrio.textContent = bocadillos[0].nombre;
                     descripcionFrio.textContent = bocadillos[0].descripcion;
-                    precioFrio.textContent = `Precio: €${Number.parseFloat(bocadillos[0].pvp).toFixed(2)}`;
+                    precioFrio.textContent = `Precio: €${Number.parseFloat(bocadillos[0].pvp)}`;
                     bocadilloCaliente.textContent = bocadillos[1].nombre;
                     descripcionCaliente.textContent = bocadillos[1].descripcion;
-                    precioCaliente.textContent = `Precio: €${Number.parseFloat(bocadillos[1].pvp).toFixed(2)}`;
+                    precioCaliente.textContent = `Precio: €${Number.parseFloat(bocadillos[1].pvp)}`;
                 }
             } else {
                 console.error('No se encontraron bocadillos para el día actual');

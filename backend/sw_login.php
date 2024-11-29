@@ -2,35 +2,43 @@
 header('Content-Type: application/json');
 
 require 'models/Usuario.php';
+require 'models/Cocina.php';
 
 $usuario = new Usuario();
+$cocina = new Cocina();
 
 $success = true;
-$msg = "Usuario valido";
+$msg = "Usuario válido";
 $data = [];
 
-//respuesta correcta por defecto 
-$json = [
-    "success" => $success,
-    "msg" => $msg,
-    "data" => $data
-];
-
-header("Content-type: application/json; charset=utf-8");
+// Recibir el JSON del frontend
 $input = json_decode(file_get_contents("php://input"), true);
 
-if(isset($input["filter"])){
+// Validar que todos los datos estén presentes
+if (isset($input["filter"])) {
     $filter = $input["filter"];
-};
+    $correo = $filter[0]["correo"] ?? null;
+    $pass = $filter[1]["pass"] ?? null;
+    $rol = $filter[2]["rol"] ?? null;
 
-$correo = $filter[0]["correo"] ?? null;
-$pass = $filter[1]["pass"] ?? null;
-
-if($usuario -> validarCredenciales($correo, $pass)){
-    echo json_encode($json);
+    // Validar que los datos sean correctos
+    if ($correo && $pass && $rol) {
+        if ($rol === "cocina") {
+            if ($cocina->validarCredenciales($correo, $pass, $rol)) {
+                echo json_encode(["success" => true, "msg" => "Usuario de cocina válido"]);
+            } else {
+                echo json_encode(["success" => false, "msg" => "Usuario no encontrado en cocina"]);
+            }
+        } else {
+            if ($usuario->validarCredenciales($correo, $pass)) {
+                echo json_encode(["success" => true, "msg" => "Usuario de alumno válido"]);
+            } else {
+                echo json_encode(["success" => false, "msg" => "Usuario no encontrado en alumno"]);
+            }
+        }
+    } else {
+        echo json_encode(["success" => false, "msg" => "Faltan parámetros"]);
+    }
 } else {
-    echo json_encode([
-        "success" => false,
-        "msg" => "Usuario no encontrado"
-    ]);
+    echo json_encode(["success" => false, "msg" => "No se recibieron parámetros"]);
 }

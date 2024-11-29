@@ -5,7 +5,7 @@ require 'inc/Singleton.php';
 header("Content-type: application/json; charset=utf-8");
 $input = json_decode(file_get_contents("php://input"), true);
 $horaActual = time();
-$horaFormateada = date("H:i:s",$horaActual);
+$horaFormateada = date("H:i:s", $horaActual);
 $macAlumno = $_SESSION["mac"];
 if (isset($input)) {
     $action = $input["action"];
@@ -14,7 +14,6 @@ if (isset($input)) {
 if ($action === "cerrar_sesion") {
     session_unset();
     session_destroy();
-
     echo json_encode(['success' => true]);
     exit;
 }
@@ -36,14 +35,14 @@ if ($action === "listar") {
 if ($action === "añadirpedido") {
 
     if (isset($input["pedido"])) {
-        
+
         $pedido = $input["pedido"];
         $alumno_mac = $macAlumno;
         $bocadillo_nombre = $pedido["bocadillo_nombre"];
         $fecha = date("Y-m-d");
         $hora = $horaFormateada;
         $retirado = $pedido["retirado"];
-        
+
         $pdo = Singleton::getInstance()->getPDO();
 
         $sql = "INSERT INTO pedidos (alumno_mac, bocadillo_nombre, fecha, hora, retirado) 
