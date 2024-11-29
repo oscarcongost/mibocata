@@ -1,66 +1,117 @@
+/* Fondo y estilo general de la página */
 body {
     background-image: url("../img/paredblanca.png");
     background-size: cover;
+    /* Escala la imagen para cubrir toda la pantalla */
     background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
     font-family: Arial, sans-serif;
-}
-
-#primariotexto {
-    text-align: center;
-    margin-top: 10px;
-    background-color: #ffffff;
-    padding: 20px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.color {
-    color: #9E1407;
-}
-
-h1 {
-    font-family: 'Irish Grover';
-    font-size: 40px;
-}
-
-.texto-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.texto-container h2 {
-    font-size: 25px;
-    color: #666666;
-    font-family: 'Irish Grover';
-}
-
-#lista-pedidos {
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-ul {
-    list-style-type: none; /* Eliminar puntos de la lista */
+    margin: 0;
     padding: 0;
 }
 
-li {
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+.container {
+    text-align: center;
+    margin-top: 20px;
 }
 
-li:hover {
+h1 {
+    font-family: 'Irish Grover', cursive;
+    font-size: 40px;
+    color: #9E1407;
+}
+
+.tabla-pedidos {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-pedidos th,
+.tabla-pedidos td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.tabla-pedidos th {
+    background-color: #9E1407;
+    color: #fff;
+    font-size: 16px;
+}
+
+.tabla-pedidos td {
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+.tabla-pedidos tr:hover {
     background-color: #e0e0e0;
+}
+
+/* Estilo para los botones */
+.boton {
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    height: 200px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 20px;
+}
+
+.frio {
+    background-color: #43a047;
+    border: 2px solid #43a047;
+}
+
+.caliente {
+    background-color: #e53935;
+    border: 2px solid #e53935;
+}
+
+.frio:hover {
+    background-color: #43a047;
+    border: 2px solid #43a047;
+}
+
+.caliente:hover {
+    background-color: #e53935;
+    border: 2px solid #e53935;
+}
+
+.boton h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.boton p {
+    font-size: 14px;
+    margin: 0;
+}
+
+.confirmar-seleccion {
+    background-color: white;
+    color: #FF7043;
+    border: 2px solid #FF7043;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.confirmar-seleccion:hover {
+    background-color: #FF7043;
+    color: white;
 }
 
 .log-out {
@@ -78,23 +129,4 @@ li:hover {
 .log-out:hover {
     background-color: #ff4343;
     color: white;
-}
-
-input[type="checkbox"] {
-    cursor: pointer;
-    transform: scale(1.2);
-    margin-left: 10px;
-}
-#listado-pedidos li {
-    background-color: #f9f9f9;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-#listado-pedidos p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #333;
 }

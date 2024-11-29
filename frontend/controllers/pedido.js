@@ -1,78 +1,71 @@
-function obtenerPedidos() {
-    // Elementos HTML donde se mostrarán los mensajes
-    var ul = document.getElementById("listado-pedidos");
-    var mensaje = document.getElementById("mensaje");
-    var seccion_datos = document.getElementById("seccion-datos");
+document.addEventListener("DOMContentLoaded", function () {
+    fetchPedidos();
+});
 
-    // Estructura de los datos para la solicitud
-    var data = {
-        action: "get",  // Acción "get" para obtener los pedidos
-        data: {
-            filters: {},  // No hay filtros
-        }
-    };
-
-    // Realizar el fetch a sw_pedido.php para obtener los pedidos
-    fetch("../backend/sw_pedido.php", {
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            'Accept': 'application/json'
-        },
+function fetchPedidos() {
+    fetch('http://localhost/mibocata/backend/sw_pedido.php', {
         method: 'POST',
-        body: JSON.stringify(data)
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'listar_pedidos' })
     })
-    .then((response) => response.json())
-    .catch((error) => console.error("Error:", error))
-    .then(function (json) {
-        console.log("Pedidos: ", json);
-        
-        if (json.rol == "alumno") {
-            mensaje.innerHTML = "El usuario no tiene permisos para acceder a esta sección";
-            seccion_datos.className = "no-mostrar";
-        } else if (json.success == false) {
-            mensaje.innerHTML = json.msg;
-            seccion_datos.className = "no-mostrar";
-        } else {
-            ul.innerHTML = ""; // Limpiar la lista de pedidos
-            seccion_datos.className = ""; // Mostrar la sección de datos
-            
-            // Si hay pedidos
-            if (json.data.data.length >= 1) {
-                mensaje.innerHTML = ""; // Limpiar mensaje de error
-                for (i = 0; i < json.data.data.length; i++) {
-                    var li = document.createElement("li");
-                    var div = document.createElement("div");
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('pedidos-body');
+            tbody.innerHTML = '';
 
-                    // Crear elementos con los datos del pedido
-                    var p_nombre_alumno = document.createElement("p");
-                    p_nombre_alumno.innerHTML = json.data.data[i].nombre_alumno;
+            if (data.success) {
+                data.pedidos.forEach(pedido => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td>${pedido.id}</td>
+                    <td>${pedido.alumno_mac}</td>
+                    <td>${pedido.bocadillo_nombre}</td>
+                    <td>${pedido.fecha}</td>
+                    <td>${pedido.hora}</td>
+                    <td>
+                        <input type="checkbox" class="retirado-checkbox" data-id="${pedido.id}" ${pedido.retirado ? 'checked' : ''}>
+                    </td>
+                `;
+                    tbody.appendChild(tr);
+                });
 
-                    var p_bocadillo = document.createElement("p");
-                    p_bocadillo.innerHTML = json.data.data[i].bocadillo_nombre;
-
-                    var p_fecha = document.createElement("p");
-                    p_fecha.innerHTML = json.data.data[i].fecha;
-
-                    var p_hora = document.createElement("p");
-                    p_hora.innerHTML = json.data.data[i].hora;
-
-                    var p_retirado = document.createElement("p");
-                    p_retirado.innerHTML = json.data.data[i].retirado ? "Sí" : "No";
-
-                    // Agregar los datos al div
-                    div.appendChild(p_nombre_alumno);
-                    div.appendChild(p_bocadillo);
-                    div.appendChild(p_fecha);
-                    div.appendChild(p_hora);
-                    div.appendChild(p_retirado);
-
-                    // Agregar el div al li y el li a la lista
-                    li.appendChild(div);
-                    ul.appendChild(li);
-                }
+                document.querySelectorAll('.retirado-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const id = checkbox.dataset.id;
+                        const retirado = checkbox.checked;
+                        actualizarRetirado(id, retirado);
+                    });
+                });
             } else {
-                mensaje.innerHTML = "No hay pedidos disponibles";
+                tbody.innerHTML = `<tr><td colspan="6">No se encontraron pedidos.</td></tr>`;
             }
-        }
-    });
+        })
+        .catch(error => {
+            console.error('Error al obtener los pedidos:', error);
+        });
+}
+
+function actualizarRetirado(id, retirado) {
+    fetch('http://localhost/mibocata/backend/sw_pedido.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            action: 'actualizar_retirado',
+            id: id,
+            retirado: retirado
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert('Error al actualizar el estado del pedido.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el estado:', error);
+        });
 }

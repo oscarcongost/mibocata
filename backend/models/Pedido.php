@@ -1,50 +1,35 @@
 <?php
-require_once 'inc/Singleton.php';
-
 class Pedido {
     private $pdo;
 
-    public function __construct() {
-        $this->pdo = Singleton::getInstance()->getPDO();
+    // Constructor, recibe una instancia de PDO
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
-    // Obtener todos los pedidos
-    public function obtenerPedidos() {
+    // Método para obtener todos los pedidos
+    public function obtenerTodos() {
         try {
-            // Consulta para obtener todos los pedidos
-            $stmt = $this->pdo->prepare("SELECT id, alumno_mac, bocadillo_nombre, fecha, hora, retirado FROM pedidos");
+            $sql = "SELECT id, alumno_mac, bocadillo_nombre, fecha, hora, retirado FROM pedidos ORDER BY fecha DESC, hora ASC";
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-            
-            // Obtener todos los resultados
-            $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-            // Verificar si hay pedidos
-            if (count($pedidos) > 0) {
-                // Si hay pedidos, devolverlos en formato JSON
-                echo json_encode([
-                    'success' => true,
-                    'pedidos' => $pedidos
-                ]);
-            } else {
-                // Si no hay pedidos, devolver un mensaje adecuado
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'No hay pedidos disponibles'
-                ]);
-            }
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            // Si hay un error en la base de datos, devolver el error
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
+            return ['success' => false, 'message' => 'Error al obtener los pedidos: ' . $e->getMessage()];
         }
     }
-    
 
-    // Actualizar el estado de un pedido
-    public function actualizarEstado($id, $estado) {
-        $stmt = $this->pdo->prepare("UPDATE pedidos SET retirado = :retirado WHERE id = :id");
-        return $stmt->execute([':estado' => $estado, ':id' => $id]);
+    // Método para marcar un pedido como retirado
+    public function marcarRetirado($id) {
+        try {
+            $sql = "UPDATE pedidos SET retirado = 1 WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return ['success' => true, 'message' => 'Pedido marcado como retirado.'];
+        } catch (PDOException $e) {
+            return ['success' => false, 'message' => 'Error al marcar el pedido como retirado: ' . $e->getMessage()];
+        }
     }
 }
+?>

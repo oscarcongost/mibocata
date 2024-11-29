@@ -1,6 +1,7 @@
 <?php
-class Singleton{
-    
+class Singleton
+{
+
     protected static $instance;
     private $pdo;
 
@@ -33,5 +34,5 @@ class Singleton{
     }
 
     public function __clone() {}
-    public function __wakeup(){}
+    public function __wakeup() {}
 }
