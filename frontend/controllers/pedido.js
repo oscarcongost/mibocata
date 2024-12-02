@@ -2,6 +2,28 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchPedidos();
 });
 
+function cerrarSesion() {
+    fetch('http://localhost/mibocata/backend/sw_pedido.php', {
+        method: 'POST',
+        body: JSON.stringify({ action: "cerrar_sesion" }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Logout-Request': 'true'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = 'index.html';
+            } else {
+                alert('Error al cerrar sesión');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+
 function fetchPedidos() {
     fetch('http://localhost/mibocata/backend/sw_pedido.php', {
         method: 'POST',
@@ -31,6 +53,7 @@ function fetchPedidos() {
                     tbody.appendChild(tr);
                 });
 
+                // Asignar eventos a los checkboxes
                 document.querySelectorAll('.retirado-checkbox').forEach(checkbox => {
                     checkbox.addEventListener('change', function () {
                         const id = checkbox.dataset.id;
@@ -53,10 +76,10 @@ function actualizarRetirado(id, retirado) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            action: 'actualizar_retirado',
-            id: id,
-            retirado: retirado
+        body: JSON.stringify({ 
+            action: 'actualizar_retirado', 
+            id: id, 
+            retirado: retirado 
         })
     })
         .then(response => response.json())

@@ -60,10 +60,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (bocadillos.length > 0) {
                     bocadilloFrio.textContent = bocadillos[0].nombre;
-                    descripcionFrio.textContent = bocadillos[0].descripcion;
+                    descripcionFrio.textContent = bocadillos[0].ingredientes;
                     precioFrio.textContent = `Precio: €${Number.parseFloat(bocadillos[0].pvp)}`;
                     bocadilloCaliente.textContent = bocadillos[1].nombre;
-                    descripcionCaliente.textContent = bocadillos[1].descripcion;
+                    descripcionCaliente.textContent = bocadillos[1].ingredientes;
                     precioCaliente.textContent = `Precio: €${Number.parseFloat(bocadillos[1].pvp)}`;
                 }
             } else {
@@ -77,6 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const precio = parseFloat(document.querySelector('#precio-frio').textContent.replace('Precio: €', ''));
         bocadilloSeleccionado = { nombre: bocadilloNombre, precio: precio };
         dineroTotal.textContent = `${precio}€`;
+        botonFrio.style.backgroundColor = "#43a047";
+        botonFrio.style.color ="white"
+        botonCaliente.style.color = "#e53935";
+        botonCaliente.style.backgroundColor= "#f9f9f9";
+        botonCaliente.style.border= "2px solid #e53935";
     });
 
     botonCaliente.addEventListener('click', function () {
@@ -84,6 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const precio = parseFloat(document.querySelector('#precio-caliente').textContent.replace('Precio: €', ''));
         bocadilloSeleccionado = { nombre: bocadilloNombre, precio: precio };
         dineroTotal.textContent = `${precio}€`;
+        botonCaliente.style.backgroundColor = "#e53935";
+        botonCaliente.style.color ="white"
+        botonFrio.style.color = "#43a047";
+        botonFrio.style.backgroundColor= "#f9f9f9";
+        botonFrio.style.border= "2px solid #43a047";
     });
 
     confirmarSeleccionBtn.addEventListener('click', function () {
@@ -130,4 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error('Error al cerrar sesión:', error));
     });
+
+    
 });

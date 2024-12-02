@@ -28,6 +28,11 @@ class Cocina
 
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        if (count($data) > 0) {
+            session_start();
+            $_SESSION["mac"] = $data[0]["mac"];
+        }
+
         return count($data) > 0;
     }
 }

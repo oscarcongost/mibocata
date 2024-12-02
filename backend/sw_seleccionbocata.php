@@ -7,6 +7,7 @@ $input = json_decode(file_get_contents("php://input"), true);
 $horaActual = time();
 $horaFormateada = date("H:i:s", $horaActual);
 $macAlumno = $_SESSION["mac"];
+
 if (isset($input)) {
     $action = $input["action"];
 }
